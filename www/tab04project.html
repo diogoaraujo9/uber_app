@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <!-- A biblioteca bundle já contem os arquivos JS do Bootstrap, Popper, e jQuery.
     <script src="js/bootstrap.bundle.js"></script>-->
-    <title>FTT EC LP2 N1!!</title>
+    <title>N2 - LP2</title>
     <LINK REL="stylesheet" HREF="css/bootstrap.css" />
     <STYLE>
         .center-txt {
@@ -45,7 +45,7 @@
         }
 
         .btn-generate-cats {
-            background-color: #d7d3e8;
+            background-color: #ffeb6aa6;
             border: 0;
             border-radius: 5px;
             padding: 2px 13px;
@@ -54,11 +54,11 @@
         }
 
         .btn-generate-cats:hover {
-            background-color: #bcb5d8;
+            background-color: #ffeb6ac9;
         }
 
         .btn-generate-cats:active {
-            background-color: #aba2d0;
+            background-color: #f7e361e3;
         }
 
         .flex-container {
@@ -86,46 +86,49 @@
             text-align: center;
             border-radius: 5px;
         }
+
+        .logo {
+            border-radius: 11px;
+            background-image: url(img/Logo.png);
+            width: 100px;
+            height: 100px;
+            background-position: center;
+            background-size: contain;
+            background-position-y: 3px;
+            float:left;
+        }
+
+        .search-boxes {
+            display: inline-block;
+            margin-left: 20px;
+            width: 55%;
+            padding-top: 11px;
+        }
+
+        .search-boxes input {
+            margin-bottom: 21px;
+            width: 100%;
+            border-width: 0px 0px 3px 0px;
+            padding: 3px 9px;
+        }
+
+        .map {
+            clear: both;
+            height: 500px;
+        }
+        
+        .container {
+            max-width: 100%;
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .internal-container {
+            padding: 0px 35px;
+        }
+
     </STYLE>
     <SCRIPT>
-
-        function createCatsCards(gatos) {
-            for (i in gatos) {
-                var catImage = document.createElement("IMG");
-
-                catImage.src = gatos[i].url;
-                catImage.className="flex-item";
-
-                document.getElementById("gatos").appendChild(catImage);
-            }
-
-            document.querySelectorAll('img').forEach(function(img){
-  	             img.onerror = function(){ this.style.display='none'; };
-            }); 
-        }
-
-        function reloadPage() {
-            url = 'https://api.thecatapi.com/v1/images/search?limit=30&api-key=286e879d-8c40-492d-ba1c-ba5309091a25'; 
-            document.getElementById("gatos").innerHTML = "";
-
-            var xhr = new XMLHttpRequest();
-
-            xhr.onload = function() {
-                if (xhr.status >= 200 && xhr.status < 300) {
-                    var cats = JSON.parse(xhr.responseText);
-                    createCatsCards(cats);
-
-                } else {                    
-                    let error_message= "Ops! Erro!!!<br>" + xhr.statusText;
-                    document.getElementById("gatos").innerHTML = error_message;
-                }
-            };
-
-            xhr.open('GET', url);
-            xhr.send();
-            
-        }
-
         function initMap() {
             var directionsService = new google.maps.DirectionsService;
             var directionsDisplay = new google.maps.DirectionsRenderer;
@@ -149,6 +152,7 @@
                 travelMode: 'DRIVING'
             }, function(response, status) {
                 if (status === 'OK') {
+                    console.log(response);
                     directionsDisplay.setDirections(response);
                 } else {
                     window.alert('Directions request failed due to ' + status);
@@ -164,9 +168,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <button onclick="reloadPage()" class="btn-generate-cats">
-            I WANT TO SEE MORE CATS!
-        </button>
+        
 
         <a class="navbar-brand" href="#">&#x1F981;</a>
 
@@ -181,41 +183,33 @@
     
     <!-- Aqui é onde ocorrem os paranauês -->
     <main class="container">
-    <div>
-            <strong>Start: </strong>
-            <select id="start" onchange="calcRoute();">
-                <option value="chicago, il">Chicago</option>
-                <option value="st louis, mo">St Louis</option>
-                <option value="joplin, mo">Joplin, MO</option>
-                <option value="oklahoma city, ok">Oklahoma City</option>
-                <option value="amarillo, tx">Amarillo</option>
-                <option value="gallup, nm">Gallup, NM</option>
-                <option value="flagstaff, az">Flagstaff, AZ</option>
-                <option value="winona, az">Winona</option>
-                <option value="kingman, az">Kingman</option>
-                <option value="barstow, ca">Barstow</option>
-                <option value="san bernardino, ca">San Bernardino</option>
-                <option value="los angeles, ca">Los Angeles</option>
-            </select>
-            <strong>End: </strong>
-            <select id="end" onchange="calcRoute();">
-                <option value="chicago, il">Chicago</option>
-                <option value="st louis, mo">St Louis</option>
-                <option value="joplin, mo">Joplin, MO</option>
-                <option value="oklahoma city, ok">Oklahoma City</option>
-                <option value="amarillo, tx">Amarillo</option>
-                <option value="gallup, nm">Gallup, NM</option>
-                <option value="flagstaff, az">Flagstaff, AZ</option>
-                <option value="winona, az">Winona</option>
-                <option value="kingman, az">Kingman</option>
-                <option value="barstow, ca">Barstow</option>
-                <option value="san bernardino, ca">San Bernardino</option>
-                <option value="los angeles, ca">Los Angeles</option>
-            </select>
+        <div class="internal-container">
+            <div class="logo"></div>
+
+            <div class="search-boxes">
+                <div>
+                    <input id="start" type="text" placeholder="Local de partida"/>
+                </div>
+                <div>
+                    <input id="end" type="text" placeholder="Para onde?"/>            
+                </div>
+            </div>
+    
+            <button onclick="calcRoute()" class="btn-generate-cats">
+                Buscar
+            </button>
         </div>
-    
-        <div id="map" style="height: 1000px">
-    
+        
+        <div id="map" class="map"></div>
+
+        <div id="pop">
+
+        </div>
+        <div id="taxi">
+
+        </div>
+        <div id="bag">
+            
         </div>
     </main>
     
@@ -229,7 +223,7 @@
             </div>
             <div class="col-sm center-txt"><b onclick='window.location="tab03todo.html"'>Todo<br><span class="icon-font">&#x1F4DD;</span></b>
             </div>
-            <div class="col-sm center-txt button-selected"><b onclick='window.location="tab04project.html"'>Cats<br><span class="icon-font">&#x1F981;</span></b>
+            <div class="col-sm center-txt button-selected"><b onclick='window.location="tab04project.html"'>88<br><span class="icon-font">&#x1F981;</span></b>
             </div>
         </div>
     </nav>
