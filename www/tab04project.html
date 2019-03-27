@@ -1,0 +1,245 @@
+<!DOCTYPE HTML>
+<HTML>
+
+<HEAD>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- A biblioteca bundle já contem os arquivos JS do Bootstrap, Popper, e jQuery.
+    <script src="js/bootstrap.bundle.js"></script>-->
+    <title>FTT EC LP2 N1!!</title>
+    <LINK REL="stylesheet" HREF="css/bootstrap.css" />
+    <STYLE>
+        .center-txt {
+            text-align: center;
+            color: black;
+            width: 90px;
+            padding: 4px;
+            margin:0;
+            border:0;
+        }
+        .button-selected {
+            background-color: #343a40;
+            color: white;
+            border-radius: 15px;
+        }       
+        .width-button-bar {
+            text-align: center;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            margin-right: 0;
+            margin-left: 0;
+            
+        }
+        .bottom-button-bar {
+            margin:0;
+            padding:0;
+            border:0;
+            width: 100%;
+        }
+        .icon-font {
+            font-size: 40px;   
+        }
+
+        main {
+            padding-top: 80px;
+            padding-bottom: 120px;
+        }
+
+        .btn-generate-cats {
+            background-color: #d7d3e8;
+            border: 0;
+            border-radius: 5px;
+            padding: 2px 13px;
+            cursor: pointer;
+            margin-right: 18px;
+        }
+
+        .btn-generate-cats:hover {
+            background-color: #bcb5d8;
+        }
+
+        .btn-generate-cats:active {
+            background-color: #aba2d0;
+        }
+
+        .flex-container {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            
+            display: -webkit-box;
+            display: -moz-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            
+            -webkit-flex-flow: row wrap;
+            justify-content: space-around;
+        }
+
+        .flex-item {
+            padding: 5px;
+            width: 265px;
+            height: 166px;
+            color: white;
+            font-weight: bold;
+            font-size: 3em;
+            text-align: center;
+            border-radius: 5px;
+        }
+    </STYLE>
+    <SCRIPT>
+
+        function createCatsCards(gatos) {
+            for (i in gatos) {
+                var catImage = document.createElement("IMG");
+
+                catImage.src = gatos[i].url;
+                catImage.className="flex-item";
+
+                document.getElementById("gatos").appendChild(catImage);
+            }
+
+            document.querySelectorAll('img').forEach(function(img){
+  	             img.onerror = function(){ this.style.display='none'; };
+            }); 
+        }
+
+        function reloadPage() {
+            url = 'https://api.thecatapi.com/v1/images/search?limit=30&api-key=286e879d-8c40-492d-ba1c-ba5309091a25'; 
+            document.getElementById("gatos").innerHTML = "";
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.onload = function() {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    var cats = JSON.parse(xhr.responseText);
+                    createCatsCards(cats);
+
+                } else {                    
+                    let error_message= "Ops! Erro!!!<br>" + xhr.statusText;
+                    document.getElementById("gatos").innerHTML = error_message;
+                }
+            };
+
+            xhr.open('GET', url);
+            xhr.send();
+            
+        }
+
+        function initMap() {
+            var directionsService = new google.maps.DirectionsService;
+            var directionsDisplay = new google.maps.DirectionsRenderer;
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 7,
+                center: {lat: 41.85, lng: -87.65}
+            });
+            directionsDisplay.setMap(map);
+
+            var onChangeHandler = function() {
+                calculateAndDisplayRoute(directionsService, directionsDisplay);
+            };
+            document.getElementById('start').addEventListener('change', onChangeHandler);
+            document.getElementById('end').addEventListener('change', onChangeHandler);
+        }
+
+        function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+            directionsService.route({
+                origin: document.getElementById('start').value,
+                destination: document.getElementById('end').value,
+                travelMode: 'DRIVING'
+            }, function(response, status) {
+                if (status === 'OK') {
+                    directionsDisplay.setDirections(response);
+                } else {
+                    window.alert('Directions request failed due to ' + status);
+                }
+            });
+        }
+    </SCRIPT>
+</HEAD>
+
+<BODY lang="pt-br">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <button onclick="reloadPage()" class="btn-generate-cats">
+            I WANT TO SEE MORE CATS!
+        </button>
+
+        <a class="navbar-brand" href="#">&#x1F981;</a>
+
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            <div class="navbar-nav float-right text-right pr-3">
+                <a class="nav-item nav-link" href="index.html">Splash</a>
+                <a class="nav-item nav-link" href="http://www.fundacaosalvadorarena.org.br/" target="newpage">CEFSA</a>
+                <a class="nav-item nav-link" href="about.html">Sobre</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Aqui é onde ocorrem os paranauês -->
+    <main class="container">
+    <div>
+            <strong>Start: </strong>
+            <select id="start" onchange="calcRoute();">
+                <option value="chicago, il">Chicago</option>
+                <option value="st louis, mo">St Louis</option>
+                <option value="joplin, mo">Joplin, MO</option>
+                <option value="oklahoma city, ok">Oklahoma City</option>
+                <option value="amarillo, tx">Amarillo</option>
+                <option value="gallup, nm">Gallup, NM</option>
+                <option value="flagstaff, az">Flagstaff, AZ</option>
+                <option value="winona, az">Winona</option>
+                <option value="kingman, az">Kingman</option>
+                <option value="barstow, ca">Barstow</option>
+                <option value="san bernardino, ca">San Bernardino</option>
+                <option value="los angeles, ca">Los Angeles</option>
+            </select>
+            <strong>End: </strong>
+            <select id="end" onchange="calcRoute();">
+                <option value="chicago, il">Chicago</option>
+                <option value="st louis, mo">St Louis</option>
+                <option value="joplin, mo">Joplin, MO</option>
+                <option value="oklahoma city, ok">Oklahoma City</option>
+                <option value="amarillo, tx">Amarillo</option>
+                <option value="gallup, nm">Gallup, NM</option>
+                <option value="flagstaff, az">Flagstaff, AZ</option>
+                <option value="winona, az">Winona</option>
+                <option value="kingman, az">Kingman</option>
+                <option value="barstow, ca">Barstow</option>
+                <option value="san bernardino, ca">San Bernardino</option>
+                <option value="los angeles, ca">Los Angeles</option>
+            </select>
+        </div>
+    
+        <div id="map" style="height: 1000px">
+    
+        </div>
+    </main>
+    
+    
+    <!-- Navegador inferior -->
+    <nav class="navbar fixed-bottom navbar-light bg-light width-button-bar">
+        <div class="row w-100 bottom-button-bar">
+            <div class="col-sm center-txt"><b onclick='window.location="tab01news.html"'>News<br><span class="icon-font">&#x1f4f0;</span></b>
+            </div>
+            <div class="col-sm center-txt"><b onclick='window.location="tab02map.html"'>Map<br><span class="icon-font">&#x1f4cc;</span></b>
+            </div>
+            <div class="col-sm center-txt"><b onclick='window.location="tab03todo.html"'>Todo<br><span class="icon-font">&#x1F4DD;</span></b>
+            </div>
+            <div class="col-sm center-txt button-selected"><b onclick='window.location="tab04project.html"'>Cats<br><span class="icon-font">&#x1F981;</span></b>
+            </div>
+        </div>
+    </nav>
+</BODY>
+<!-- carga de scripts do Bootstrap, JQuery, Popper -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0cE8tMlrRA4v6NmZ5Nq3Cz96AK_CXXwQ"></script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0cE8tMlrRA4v6NmZ5Nq3Cz96AK_CXXwQ&callback=initMap">
+</script>
+</HTML>
