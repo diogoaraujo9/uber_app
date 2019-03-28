@@ -44,20 +44,20 @@
             padding-bottom: 120px;
         }
 
-        .btn-generate-cats {
+        .btn-search-map {
             background-color: #ffeb6aa6;
             border: 0;
             border-radius: 5px;
             padding: 2px 13px;
             cursor: pointer;
-            margin-right: 18px;
+            margin-left: 20px;
         }
 
-        .btn-generate-cats:hover {
+        .btn-search-map:hover {
             background-color: #ffeb6ac9;
         }
 
-        .btn-generate-cats:active {
+        .btn-search-map:active {
             background-color: #f7e361e3;
         }
 
@@ -125,6 +125,29 @@
 
         .internal-container {
             padding: 0px 35px;
+        }
+
+        .option {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #ffeb6a;
+            display: inline-block;
+            margin: 0px 8%;
+            position: relative;
+        }
+
+        .options-container {
+            text-align: center;
+            margin: 35px 0px;       
+
+        }
+
+        .option-icon {
+            font-size: 56px;
+            position: absolute;
+            top: 20px;           
+            left: 23px;
         }
 
     </STYLE>
@@ -195,22 +218,27 @@
                 </div>
             </div>
     
-            <button onclick="calcRoute()" class="btn-generate-cats">
+            <button onclick="calcRoute()" class="btn-search-map">
                 Buscar
             </button>
         </div>
         
         <div id="map" class="map"></div>
 
-        <div id="pop">
-
-        </div>
-        <div id="taxi">
-
-        </div>
-        <div id="bag">
-            
-        </div>
+        <div class="options-container">
+            <div id="pop" class="option">
+                <i class="fas fa-car option-icon"></i>
+                <div>88 Pop</div>
+            </div>
+            <div id="taxi" class="option">
+                <i class="fas fa-taxi option-icon"></i>
+                <div>Táxi</div>                
+            </div>
+            <div id="bag" class="option">
+                <i class="fas fa-suitcase-rolling option-icon" style="left: 30px;"></i>
+                <div>88 Bag</div>                
+            </div>
+        </div>        
     </main>
     
     
@@ -236,4 +264,5 @@
 <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0cE8tMlrRA4v6NmZ5Nq3Cz96AK_CXXwQ&callback=initMap">
 </script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
 </HTML>
