@@ -150,6 +150,15 @@
             left: 23px;
         }
 
+        .option-title {
+            margin-top: 109px;
+        }
+
+        .option-price {
+            margin-top: 2px;
+            font-weight: 600;
+        }
+
     </STYLE>
     <SCRIPT>
         function initMap() {
@@ -164,11 +173,10 @@
             var onChangeHandler = function() {
                 calculateAndDisplayRoute(directionsService, directionsDisplay);
             };
-            document.getElementById('start').addEventListener('change', onChangeHandler);
-            document.getElementById('end').addEventListener('change', onChangeHandler);
+            document.getElementById('btn-buscar').addEventListener('click', onChangeHandler);
         }
 
-        function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+        function calculateAndDisplayRoute(directionsService, directionsDisplay) {            
             directionsService.route({
                 origin: document.getElementById('start').value,
                 destination: document.getElementById('end').value,
@@ -176,11 +184,34 @@
             }, function(response, status) {
                 if (status === 'OK') {
                     console.log(response);
+                    calcPrices(response);
                     directionsDisplay.setDirections(response);
                 } else {
                     window.alert('Directions request failed due to ' + status);
                 }
             });
+        }
+
+        function calcPrices(response) {
+            if (response.routes && 
+                response.routes[0] && 
+                response.routes[0].legs &&
+                response.routes[0].legs[0] &&
+                response.routes[0].legs[0].distance &&
+                response.routes[0].legs[0].distance.value)
+            {
+                var value = response.routes[0].legs[0].distance.value;
+                
+                document.getElementById('pop-price').innerHTML = "R$ " + (value / 390).toFixed(2);
+                document.getElementById('taxi-price').innerHTML = "R$ " + (value / 330).toFixed(2);
+                document.getElementById('bag-price').innerHTML = "R$ " + (value / 300).toFixed(2);
+            }
+            else
+            {
+                document.getElementById('pop-price').innerHTML = "----";
+                document.getElementById('taxi-price').innerHTML = "----";
+                document.getElementById('bag-price').innerHTML = "----";
+            }
         }
     </SCRIPT>
 </HEAD>
@@ -189,9 +220,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
-        </button>
-
-        
+        </button>       
 
         <a class="navbar-brand" href="#">&#x1F981;</a>
 
@@ -218,7 +247,7 @@
                 </div>
             </div>
     
-            <button onclick="calcRoute()" class="btn-search-map">
+            <button id="btn-buscar" class="btn-search-map">
                 Buscar
             </button>
         </div>
@@ -228,15 +257,18 @@
         <div class="options-container">
             <div id="pop" class="option">
                 <i class="fas fa-car option-icon"></i>
-                <div>88 Pop</div>
+                <div class="option-title">88 Pop</div>
+                <div id="pop-price" class="option-price">---</div>
             </div>
             <div id="taxi" class="option">
                 <i class="fas fa-taxi option-icon"></i>
-                <div>Táxi</div>                
+                <div class="option-title">Táxi</div>     
+                <div id="taxi-price" class="option-price">---</div>
             </div>
             <div id="bag" class="option">
                 <i class="fas fa-suitcase-rolling option-icon" style="left: 30px;"></i>
-                <div>88 Bag</div>                
+                <div class="option-title">88 Bag</div>   
+                <div id="bag-price" class="option-price">---</div>
             </div>
         </div>        
     </main>
